@@ -11,7 +11,7 @@ import './App.css'
 const LS_KEY = 'weather-last-city'
 
 function placeLabel(p: GeoItem): string {
-  return [p.name, p.admin1, p.country].filter(Boolean).join(' · ')
+  return [p.name, p.district, p.admin1, p.country].filter(Boolean).join(' · ')
 }
 
 function App() {
