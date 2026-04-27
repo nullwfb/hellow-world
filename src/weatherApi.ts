@@ -253,12 +253,25 @@ export async function searchLocation(
   return om.slice(0, count)
 }
 
+export type ChartPoint = {
+  /** 每 3 小时一条刻度，否则为空串（折线仍有点） */
+  tickLabel: string
+  fullTime: string
+  tempC: number
+  code: number
+  label: string
+  idx: number
+}
+
 export type WeatherBundle = {
   current: CurrentWeather
   highC: number
   lowC: number
   nextHours: { time: string; tempC: number; code: number; label: string }[]
+  /** 约 48h 整点，用于折线图 */
+  chartPoints: ChartPoint[]
   timezone: string
+  currentLocalTimeLabel: string
 }
 
 export async function fetchWeather(
@@ -278,7 +291,7 @@ export async function fetchWeather(
     'temperature_2m_max,temperature_2m_min,weather_code',
   )
   u.searchParams.set('timezone', 'auto')
-  u.searchParams.set('forecast_days', '1')
+  u.searchParams.set('forecast_days', '2')
 
   let res: Response
   try {
@@ -298,21 +311,43 @@ export async function fetchWeather(
   const hourlyC = raw.hourly?.weather_code
   const hourlyTime = raw.hourly?.time
   const nextHours: WeatherBundle['nextHours'] = []
+  const chartPoints: ChartPoint[] = []
   if (hourlyTime && hourlyT && hourlyC) {
     const now = new Date()
-    for (let i = 0; i < Math.min(24, hourlyTime.length); i++) {
-      const t = new Date(hourlyTime[i])
-      if (t < now) continue
-      if (nextHours.length >= 8) break
+    for (let i = 0; i < hourlyTime.length; i++) {
+      const t = new Date(hourlyTime[i]!)
       const code = hourlyC[i] ?? 0
-      nextHours.push({
-        time: hourlyTime[i]!.slice(11, 16),
-        tempC: Math.round((hourlyT[i] as number) * 10) / 10,
-        code,
-        label: labelForCode(code),
-      })
+      const te = Math.round((hourlyT[i] as number) * 10) / 10
+      if (t < now) continue
+      if (nextHours.length < 8) {
+        nextHours.push({
+          time: hourlyTime[i]!.slice(11, 16),
+          tempC: te,
+          code,
+          label: labelForCode(code),
+        })
+      }
+      if (chartPoints.length < 48) {
+        const m = t.getMonth() + 1
+        const d = t.getDate()
+        const h = t.getHours()
+        const tick = h % 3 === 0
+        chartPoints.push({
+          tickLabel: tick
+            ? `${m}/${d} ${String(h).padStart(2, '0')}:00`
+            : '',
+          fullTime: hourlyTime[i]!,
+          tempC: te,
+          code,
+          label: labelForCode(code),
+          idx: chartPoints.length,
+        })
+      }
     }
   }
+
+  const cdt = new Date()
+  const currentLocalTimeLabel = `${String(cdt.getMonth() + 1).toString()}/${String(cdt.getDate()).padStart(2, '0')} ${String(cdt.getHours()).padStart(2, '0')}:${String(cdt.getMinutes()).padStart(2, '0')}`
 
   return {
     current: {
@@ -326,6 +361,8 @@ export async function fetchWeather(
     highC: high,
     lowC: low,
     nextHours,
+    chartPoints,
     timezone: raw.timezone ?? 'local',
+    currentLocalTimeLabel,
   }
 }

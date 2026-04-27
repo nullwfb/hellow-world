@@ -1,21 +1,24 @@
 :root {
-  --text: #3d3a42;
-  --text-h: #0f0d12;
-  --bg: #f0eef5;
-  --border: #d8d4e0;
-  --panel: #fff;
-  --panel-2: #f6f4fa;
-  --accent: #5b4bb3;
-  --accent-2: #4338a0;
-  --accent-bg: rgba(91, 75, 179, 0.1);
-  --accent-border: rgba(91, 75, 179, 0.4);
-  --shadow-sm: 0 1px 3px rgba(15, 13, 18, 0.08);
+  --text: #5a5668;
+  --text-h: #1a1824;
+  --bg: #e8ecf5;
+  --grad-a: #c8d4f0;
+  --grad-b: #e4eaf8;
+  --border: rgba(90, 80, 120, 0.12);
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-2: rgba(255, 255, 255, 0.4);
+  --accent: #5b6fd0;
+  --accent-2: #4a5fbf;
+  --chart-stroke: #4f6ad8;
+  --chart-tick: #6b6a7a;
+  --chart-axis: rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 4px 24px rgba(40, 50, 100, 0.1);
 
-  --sans: 'Segoe UI', system-ui, sans-serif;
-  --heading: 'Segoe UI', system-ui, sans-serif;
-  --mono: ui-monospace, 'Cascadia Code', monospace;
+  --sans: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --heading: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
+  --mono: ui-monospace, monospace;
 
-  font: 16px/1.5 var(--sans);
+  font: 16px/1.45 var(--sans);
   color: var(--text);
   background: var(--bg);
   text-rendering: optimizeLegibility;
@@ -25,17 +28,20 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #b8b3c4;
-    --text-h: #f3f0fa;
-    --bg: #12111a;
-    --border: #2a2735;
-    --panel: #1a1824;
-    --panel-2: #23212f;
-    --accent: #a5a0f0;
-    --accent-2: #c4b5fd;
-    --accent-bg: rgba(165, 160, 240, 0.12);
-    --accent-border: rgba(196, 181, 253, 0.35);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+    --text: #9ca0b0;
+    --text-h: #e8eaf4;
+    --bg: #0d0f18;
+    --grad-a: #1a1f2e;
+    --grad-b: #12141f;
+    --border: rgba(200, 200, 255, 0.08);
+    --panel: rgba(28, 32, 48, 0.7);
+    --panel-2: rgba(20, 24, 40, 0.5);
+    --accent: #7c8fd8;
+    --accent-2: #9aaef0;
+    --chart-stroke: #7c8fd8;
+    --chart-tick: #9a9ab0;
+    --chart-axis: rgba(255, 255, 255, 0.1);
+    --shadow-sm: 0 4px 28px rgba(0, 0, 0, 0.4);
     color-scheme: dark;
   }
 }
@@ -50,19 +56,13 @@ body {
 }
 
 #root {
-  max-width: 32rem;
-  margin: 0 auto;
-  padding: 1.5rem 1.25rem 2rem;
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
 }
 
 h1,
 h2,
 h3 {
   font-family: var(--heading);
-  font-weight: 600;
   color: var(--text-h);
 }
 
