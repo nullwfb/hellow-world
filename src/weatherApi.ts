@@ -1,5 +1,5 @@
 /**
- * 地理：优先 ① 国内内置坐标 ② 高德输入提示（需 VITE_AMAP_KEY）③ Open-Meteo 兜底
+ * 地理：优先 ① 国内内置坐标 ② 可选高德输入提示 ③ Open-Meteo 兜底（不做逆地理，避免额外请求）
  * 预报：仍用 Open-Meteo。文档：open-meteo.com
  */
 
@@ -254,8 +254,10 @@ export async function searchLocation(
 }
 
 export type ChartPoint = {
-  /** 每 3 小时一条刻度，否则为空串（折线仍有点） */
+  /** 6 小时间隔显示在 X 轴，否则只参与曲线与点选 */
   tickLabel: string
+  /** 本地化的「4/28 16:00」等，给 Tooltip/详情 */
+  displayTime: string
   fullTime: string
   tempC: number
   code: number
@@ -331,9 +333,10 @@ export async function fetchWeather(
         const m = t.getMonth() + 1
         const d = t.getDate()
         const h = t.getHours()
-        const tick = h % 3 === 0
+        const showTick = h % 6 === 0
         chartPoints.push({
-          tickLabel: tick
+          displayTime: `${m}/${d} ${String(h).padStart(2, '0')}:00`,
+          tickLabel: showTick
             ? `${m}/${d} ${String(h).padStart(2, '0')}:00`
             : '',
           fullTime: hourlyTime[i]!,

@@ -12,6 +12,10 @@
   --chart-stroke: #4f6ad8;
   --chart-tick: #6b6a7a;
   --chart-axis: rgba(0, 0, 0, 0.08);
+  --chart-grid: rgba(0, 0, 0, 0.06);
+  --chart-dot: #fff;
+  --chart-brush-stroke: rgba(90, 100, 180, 0.25);
+  --chart-brush-bg: rgba(120, 130, 200, 0.08);
   --shadow-sm: 0 4px 24px rgba(40, 50, 100, 0.1);
 
   --sans: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
@@ -41,6 +45,10 @@
     --chart-stroke: #7c8fd8;
     --chart-tick: #9a9ab0;
     --chart-axis: rgba(255, 255, 255, 0.1);
+    --chart-grid: rgba(255, 255, 255, 0.07);
+    --chart-dot: #1e2235;
+    --chart-brush-stroke: rgba(200, 210, 255, 0.2);
+    --chart-brush-bg: rgba(80, 100, 200, 0.12);
     --shadow-sm: 0 4px 28px rgba(0, 0, 0, 0.4);
     color-scheme: dark;
   }

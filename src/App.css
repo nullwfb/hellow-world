@@ -9,9 +9,9 @@
 }
 
 .app-inner {
-  max-width: 24rem;
+  max-width: 28rem;
   margin: 0 auto;
-  padding: 1.5rem 1.15rem 2.25rem;
+  padding: 1.5rem 1.15rem 1.5rem;
 }
 
 .app-header {
@@ -189,6 +189,73 @@
 .chart-wrap {
   padding: 0 0.2rem 0.6rem;
   margin-top: 0.25rem;
+}
+
+.chart-outer {
+  width: 100%;
+  overflow: hidden;
+}
+
+.chart-main {
+  min-height: 300px;
+  width: 100%;
+}
+
+.recharts-tooltip-diy {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-sm);
+  max-width: 14rem;
+}
+
+.recharts-tooltip-t {
+  margin: 0 0 0.2rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.recharts-tooltip-main {
+  margin: 0 0 0.2rem;
+  color: var(--text-h);
+  font-size: 0.95rem;
+}
+
+.recharts-tooltip-w {
+  margin: 0;
+  color: var(--text);
+  opacity: 0.8;
+  font-size: 0.78rem;
+}
+
+.chart-picked {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text);
+  text-align: center;
+  padding: 0.5rem 0.4rem;
+  background: var(--panel-2);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.chart-picked-time {
+  color: var(--text-h);
+  font-weight: 500;
+  margin-right: 0.35rem;
+}
+
+.site-credit {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.5;
+  margin: 1.5rem 0 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
 }
 
 .chart-skel {

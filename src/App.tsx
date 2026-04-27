@@ -1,5 +1,4 @@
 import { Suspense, lazy, useCallback, useEffect, useState } from 'react'
-import { placeLineForCoords } from './reverseGeocode'
 import {
   type GeoItem,
   type WeatherBundle,
@@ -14,8 +13,6 @@ const WeatherChart = lazy(() =>
 )
 
 const LS_KEY = 'weather-last-query'
-
-const amapKey = import.meta.env.VITE_AMAP_KEY || ''
 
 function placeLabel(p: GeoItem): string {
   return [p.name, p.district, p.admin1, p.country].filter(Boolean).join(' · ')
@@ -37,15 +34,13 @@ function App() {
 
   const runGeo = useCallback(async (lat: number, lon: number) => {
     setCandidates([])
-    setPlaceLine(null)
+    setPlaceLine(
+      `当前位置 ${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E`,
+    )
     setStage('loading')
     try {
-      const [line, w] = await Promise.all([
-        placeLineForCoords(lat, lon, amapKey),
-        fetchWeather(lat, lon),
-      ])
+      const w = await fetchWeather(lat, lon)
       setWeather(w)
-      setPlaceLine(line || '当前位置')
     } catch (err) {
       if (err instanceof WeatherApiError) {
         setError(err.message)
@@ -102,14 +97,9 @@ function App() {
         if (list.length === 1) {
           const p0 = list[0]!
           setStage('loading')
+          setPlaceLine(placeLabel(p0))
           const w = await fetchWeather(p0.latitude, p0.longitude)
           setWeather(w)
-          const line = await placeLineForCoords(
-            p0.latitude,
-            p0.longitude,
-            amapKey,
-          )
-          setPlaceLine(line || placeLabel(p0))
           setStage('idle')
         } else {
           setStage('picking')
@@ -131,13 +121,12 @@ function App() {
 
   const pickAndLoad = useCallback(async (p: GeoItem) => {
     setError(null)
+    setPlaceLine(placeLabel(p))
     setStage('loading')
     setCandidates([])
     try {
       const w = await fetchWeather(p.latitude, p.longitude)
       setWeather(w)
-      const line = await placeLineForCoords(p.latitude, p.longitude, amapKey)
-      setPlaceLine(line || placeLabel(p))
     } catch (err) {
       if (err instanceof WeatherApiError) {
         setError(err.message)
@@ -337,6 +326,8 @@ function App() {
             </div>
           )}
         </section>
+
+        <p className="site-credit">wuyouxiu开发</p>
       </div>
     </div>
   )
