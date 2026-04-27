@@ -1,4 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useState } from 'react'
+import { bdcPlaceLine } from './reverseGeocode'
 import {
   type GeoItem,
   type WeatherBundle,
@@ -35,12 +36,20 @@ function App() {
   const runGeo = useCallback(async (lat: number, lon: number) => {
     setCandidates([])
     setPlaceLine(
-      `当前位置 ${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E`,
+      `定位中… ${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E`,
     )
     setStage('loading')
     try {
-      const w = await fetchWeather(lat, lon)
+      const [w, line] = await Promise.all([
+        fetchWeather(lat, lon),
+        bdcPlaceLine(lat, lon),
+      ])
       setWeather(w)
+      if (line) {
+        setPlaceLine(line)
+      } else {
+        setPlaceLine(`当前位置 ${lat.toFixed(3)}°N, ${lon.toFixed(3)}°E`)
+      }
     } catch (err) {
       if (err instanceof WeatherApiError) {
         setError(err.message)
@@ -100,6 +109,8 @@ function App() {
           setPlaceLine(placeLabel(p0))
           const w = await fetchWeather(p0.latitude, p0.longitude)
           setWeather(w)
+          const bdc = await bdcPlaceLine(p0.latitude, p0.longitude)
+          if (bdc) setPlaceLine(bdc)
           setStage('idle')
         } else {
           setStage('picking')
@@ -127,6 +138,8 @@ function App() {
     try {
       const w = await fetchWeather(p.latitude, p.longitude)
       setWeather(w)
+      const bdc = await bdcPlaceLine(p.latitude, p.longitude)
+      if (bdc) setPlaceLine(bdc)
     } catch (err) {
       if (err instanceof WeatherApiError) {
         setError(err.message)

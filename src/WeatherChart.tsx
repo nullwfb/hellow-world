@@ -108,7 +108,7 @@ export function WeatherChart({ points, unitF }: Props) {
   return (
     <div className="chart-outer" aria-label="近 48 小时气温，可拖选下方滑块平移或缩放时间范围，悬停或点圆点看详情">
       <div className="chart-main">
-        <ResponsiveContainer width="100%" height={360}>
+        <ResponsiveContainer width="100%" height={420}>
           <ComposedChart
             data={data}
             margin={{ top: 14, right: 6, left: 2, bottom: 0 }}
@@ -163,10 +163,10 @@ export function WeatherChart({ points, unitF }: Props) {
             />
             <Brush
               dataKey="idx"
-              height={44}
+              height={48}
               stroke="var(--chart-brush-stroke)"
               fill="var(--chart-brush-bg)"
-              travellerWidth={8}
+              travellerWidth={10}
             />
           </ComposedChart>
         </ResponsiveContainer>

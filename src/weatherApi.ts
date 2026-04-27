@@ -333,7 +333,7 @@ export async function fetchWeather(
         const m = t.getMonth() + 1
         const d = t.getDate()
         const h = t.getHours()
-        const showTick = h % 6 === 0
+        const showTick = h % 8 === 0
         chartPoints.push({
           displayTime: `${m}/${d} ${String(h).padStart(2, '0')}:00`,
           tickLabel: showTick
