@@ -17,7 +17,10 @@ npm run build
 
 ## GitHub Pages
 
-1. 将仓库推送到 GitHub 后，在 **Settings → Pages** 中把 **Build and deployment** 设为 **GitHub Actions**（首次需授权 Pages）。
-2. 推送到 `main` 分支会触发 `.github/workflows/deploy.yml`，用环境变量 `GITHUB_PAGES_BASE=/<仓库名>/` 构建，产物部署到项目站。
+工作流会把 `dist` 推送到分支 **`gh-pages`**（使用 [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages)）。
 
-若用其它静态托管，按需设置 `GITHUB_PAGES_BASE`（Vite 的 `base`），或本地直接 `npm run build`（默认 `base: '/'`）。
+1. 合并/推送到 `main` 后等待 CI 成功。
+2. 打开 **Settings → Pages** → **Build and deployment**：**Source** 选 **Deploy from a branch**（不要选仅 GitHub Actions 那一项，否则易与“未启用”冲突）。
+3. **Branch** 选 `gh-pages`，目录选 **`/ (root)`** → Save。
+
+若用其它静态托管，按需设置 `GITHUB_PAGES_BASE`（Vite 的 `base`）；本地 `npm run build` 时默认 `base: '/'`。
